@@ -2133,7 +2133,6 @@ class SymmetricGroupAlgebra_n(GroupAlgebra_class):
             sqrt_unitary_factor = sqrt(K(unitary_factor))
             return sqrt_unitary_factor * sum(f(g) * Q.inverse() * rho(g) * Q for g in G if f(g))
 
-        K = all_roots_field()
         delta = lambda s: lambda t: 1 if t == s else 0
         return matrix(K, [flatten([hat(delta(g), partition).list() for partition in Partitions(G.degree())]) for g in G]).transpose()
 

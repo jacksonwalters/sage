@@ -2091,16 +2091,22 @@ class SymmetricGroupAlgebra_n(GroupAlgebra_class):
         from sage.misc.functional import sqrt
         from sage.misc.flatten import flatten
 
+        G = self.group()
+        group_size = G.cardinality()
+        data = {}
+        for partition in Partitions(G.degree()):
+            specht_module = self.specht_module(partition)
+            rho = specht_module.representation_matrix
+            P = sum(rho(g) * rho(g).conjugate().transpose() for g in G) / group_size
+            d, L = P.eigenmatrix_left()
+            data[partition] = (specht_module, P, d, L)
+
         def all_roots_field():
             required_square_roots = []
-            for partition in Partitions(self.group().degree()):
-                specht_module = self.specht_module(partition)
-                rho = specht_module.representation_matrix
-                group_size = self.group().cardinality()
-                P = (1/group_size)*sum(rho(g)*rho(g).conjugate().transpose() for g in self.group())
-                d, L = P.eigenmatrix_left()
-                required_square_roots += [specht_module.dimension(),self.group().cardinality()] + d.diagonal()
-            required_square_roots = flatten([[QQ(q).numerator(),QQ(q).denominator()] if q in QQ else q for q in required_square_roots])
+            for partition in Partitions(G.degree()):
+                specht_module, P, d, L = data[partition]
+                required_square_roots += [specht_module.dimension(), group_size] + d.diagonal()
+            required_square_roots = flatten([[QQ(q).numerator(), QQ(q).denominator()] if q in QQ else q for q in required_square_roots])
             K = self.base_ring()
             for n in set(required_square_roots):
                 R = PolynomialRing(K, 'x')

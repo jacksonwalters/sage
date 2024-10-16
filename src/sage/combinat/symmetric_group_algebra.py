@@ -2119,12 +2119,11 @@ class SymmetricGroupAlgebra_n(GroupAlgebra_class):
                     K = K.extension(sqrt(n).minpoly(),names=gen_name)
             return K
 
-        def unitary_change_of_basis(partition,K):
-            rho = self.specht_module(partition).representation_matrix
-            group_size = self.group().cardinality()
-            P = (1/group_size)*sum(rho(g)*rho(g).conjugate().transpose() for g in self.group())
-            d, L = P.eigenmatrix_left()
+        def unitary_change_of_basis(partition, K):
+            specht_module, P, d, L = data[partition]
             return L.inverse() * diagonal_matrix([sqrt(K(a)) for a in d.diagonal()]) * L
+        K = all_roots_field()
+        unitary_data = {partition: unitary_change_of_basis(partition, K) for partition in Partitions(G.degree())}
 
         def hat(f,partition,K):
             specht_module = self.specht_module(partition)

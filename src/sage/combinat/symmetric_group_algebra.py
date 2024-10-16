@@ -2135,7 +2135,7 @@ class SymmetricGroupAlgebra_n(GroupAlgebra_class):
 
         K = all_roots_field()
         delta = lambda s: lambda t: 1 if t == s else 0
-        return matrix(K,[flatten([hat(delta(g),partition,K).list() for partition in Partitions(self.group().degree())]) for g in self.group()]).transpose()
+        return matrix(K, [flatten([hat(delta(g), partition).list() for partition in Partitions(G.degree())]) for g in G]).transpose()
 
     def _dft_seminormal(self, mult='l2r'):
         """

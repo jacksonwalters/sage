@@ -2086,6 +2086,13 @@ class SymmetricGroupAlgebra_n(GroupAlgebra_class):
             [               0       -1/3*sqrt3        1/6*sqrt3             -1/2              1/2        1/6*sqrt3]
             [      -1/3*sqrt3                0             -1/2        1/6*sqrt3        1/6*sqrt3              1/2]
             [-1/6*sqrt2*sqrt3  1/6*sqrt2*sqrt3  1/6*sqrt2*sqrt3 -1/6*sqrt2*sqrt3 -1/6*sqrt2*sqrt3  1/6*sqrt2*sqrt3]
+
+        TESTS::
+
+            sage: QS3 = SymmetricGroupAlgebra(QQ, 3)
+            sage: U_dft = QS3._dft_unitary()
+            sage: U_dft*U_dft.conjugate().transpose() == identity_matrix(QS3.group().cardinality())
+            True
         """
         from sage.matrix.special import diagonal_matrix
         from sage.misc.functional import sqrt

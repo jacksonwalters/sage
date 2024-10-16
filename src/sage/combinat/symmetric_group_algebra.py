@@ -2125,13 +2125,13 @@ class SymmetricGroupAlgebra_n(GroupAlgebra_class):
         K = all_roots_field()
         unitary_data = {partition: unitary_change_of_basis(partition, K) for partition in Partitions(G.degree())}
 
-        def hat(f,partition,K):
-            specht_module = self.specht_module(partition)
-            rho = specht_module.representation_matrix
-            Q = unitary_change_of_basis(partition,K)
-            unitary_factor = specht_module.dimension()/self.group().cardinality()
+        def hat(f, partition):
+            specht_module, P, d, L = data[partition]
+            rho = self.specht_module(partition).representation_matrix
+            Q = unitary_data[partition]
+            unitary_factor = specht_module.dimension() / group_size
             sqrt_unitary_factor = sqrt(K(unitary_factor))
-            return sqrt_unitary_factor*sum(f(g)*Q.inverse()*rho(g)*Q for g in self.group())
+            return sqrt_unitary_factor * sum(f(g) * Q.inverse() * rho(g) * Q for g in G if f(g))
 
         K = all_roots_field()
         delta = lambda s: lambda t: 1 if t == s else 0
